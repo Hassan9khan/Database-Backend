@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Todos from "../models/todos.models.js";
 
 const addTodo = (req, res) => {
   const { title, description } = req.body;
@@ -16,6 +17,7 @@ const addTodo = (req, res) => {
   });
   res.status(201).json({
     message: "user added to database",
+    todo,
   });
 };
 
@@ -65,7 +67,5 @@ const deleteTodo = async (req , res) => {
     todo,
   })
 }
-
-
 
 export { addTodo , getAllTodo , getTodoById ,deleteTodo}

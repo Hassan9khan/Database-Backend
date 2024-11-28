@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 const todoSchema = new Schema(
   {
@@ -10,7 +10,6 @@ const todoSchema = new Schema(
     },
     description: {
       type: String,
-      required: [true, "description is required "],
     },
   },
   {
