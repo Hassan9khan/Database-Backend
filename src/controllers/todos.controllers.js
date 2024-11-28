@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const addTodo = (req, res) => {
   const { title, description } = req.body;
 
@@ -17,11 +19,53 @@ const addTodo = (req, res) => {
   });
 };
 
-
 // get all todo
-const getAllTodo =  async (req , res) => {
-    const todos = await Todos.find({})
-    res.status(200).json({
-        todos: todos
-    })
+const getAllTodo = async (req, res) => {
+  const todos = await Todos.find({});
+  res.status(200).json({
+    todos: todos,
+  });
+};
+
+// get single todo
+const getTodoById = async () => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "not a valid id" });
+  }
+
+  const todo = await Todos.findById(id);
+  if (!todo) {
+    res.status(400).json({
+      message: "todo not found",
+    });
+    return;
+  }
+
+  res.status(200).json(todo);
+};
+
+
+// delete todo
+const deleteTodo = async (req , res) => {
+  const { id } = req.params;
+
+  if(!mongoose.Types.ObjectId.isValid(id)){
+    return res.status(400).json({ error: "not a valid id" });
+  }
+
+  const todo = await Todos.findOneAndDelete({ _id : id })
+
+  if(!todo) {
+    return res.status(404).json({error: "no todo found"})
+  }
+  res.status(200).json({
+    message: "todo deleted successfully",
+    todo,
+  })
 }
+
+
+
+export { addTodo , getAllTodo , getTodoById ,deleteTodo}
